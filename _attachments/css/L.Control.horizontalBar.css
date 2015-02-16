@@ -1,0 +1,164 @@
+.leaflet-horizontalBar {
+  position: absolute;
+  height: 78px;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 3000;
+  background: rgba(247, 247, 245, 0.94);
+  border-bottom: 1px solid #BCBAB4;
+}
+
+.leaflet-horizontalBar.top {
+  -webkit-transform: translate3d(0,-78px,0);
+  transition: -webkit-transform 0.3s ease-out;
+  padding: 0;
+}
+
+.leaflet-horizontalBar.top.visible {-webkit-transform: translateY(0);}
+
+.leaflet-horizontalBar > .leaflet-control {
+  height: 100%;
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  position: relative;
+  overflow: hidden;
+}
+
+.leaflet-top {transition: top 0.5s;}
+
+.leaflet-horizontalBar.top.small {
+  -webkit-transform: translateY(-35px);
+}
+
+#addresssearchinputwrapper {
+  background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 90%, rgba(255,255,255,0) 91%);
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(255,255,255,1)), color-stop(90%,rgba(255,255,255,1)), color-stop(91%,rgba(255,255,255,0)));
+  background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 90%,rgba(255,255,255,0) 91%);
+  background: -o-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 90%,rgba(255,255,255,0) 91%);
+  background: -ms-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 90%,rgba(255,255,255,0) 91%);
+  background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,1) 90%,rgba(255,255,255,0) 91%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 );
+  border-radius: 5px;
+  border: 0;
+  outline: 0;
+  float: left;
+  transition: -webkit-transform .3s;
+  width: 70%;
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  margin-left: -35%;
+}
+#addresssearchinputwrapper:after {
+  content: " ";
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  text-decoration: inherit;
+  color: #D3D3D3;
+  position: absolute;
+  top: 0;
+  height: 26px;
+  line-height: 26px;
+  right: 0;
+  z-index: -1;
+  background-color: #FFF;
+  width: 14px;
+  padding-right: 8px;
+  border-radius: 0 5px 5px 0;
+}
+#addresssearchinputwrapper.active:after {
+  content: "\f057";
+}
+#addresssearchinput {
+  width: 100%;
+  height: 26px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 0;
+  outline: 0;
+  padding: 0 25px 0 10px;
+  font-family: sans-serif;
+  -webkit-tap-highlight-color: #fff;
+  font-size: 14px;
+}
+#addresssearchinputwrapper.active {
+  -webkit-transform: translateX(-20%);
+}
+#addresssearchinputwrapper.active ~ #cancelbtn {
+  opacity: 1;
+}
+
+#addresssearchinputwrapper.active ~ #addbtn, .state-form-location > #addbtn {
+  display: none;
+}
+.state-form-location > #addresssearchinputwrapper:not(.active) ~ #confirmbtn {
+  opacity: 1;
+}
+@keyframes clearflash {
+  0%,100% {background-color: transparent;}
+  50% {background-color: grey;}
+}
+
+.horizontalBar-button {
+  width: 15%;
+  height: 26px;
+  border: 0;
+  outline: 0;
+  color: #037AFA;
+  float: left;
+  background: transparent;
+  font-size: 14px;
+  -webkit-tap-highlight-color:transparent;
+  bottom: 8px;
+  position: absolute;
+  text-align: center;
+  padding-left: 8px;
+}
+#confirmbtn {
+  opacity: 0;
+  transition: opacity .3s;
+}
+.horizontalBar-button.right {
+  padding-right: 8px;
+  right: 0;
+}
+.horizontalBar-button.text.right {
+  width: 25%;
+  text-align: right;
+}
+.horizontalBar-button.text {
+  width: 25%;
+}
+#findmebtn:hover, #addbtn:hover, #confirmbtn:hover {color: #0150A3;cursor: pointer;}
+#cancelbtn {
+  width: 30%;
+  margin-left: -15%;
+  background: transparent;
+  opacity: 0;
+  transition: opacity .3s;
+  bottom: 8px;
+  position: absolute;
+}
+.horizontalBar-header {
+  width: 50%;
+  height: 26px;
+  border: 0;
+  outline: 0;
+  float: left;
+  background: rgba(0, 0, 0, 0);
+  font-size: 16px;
+  font-weight: bold;
+  bottom: 8px;
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  margin-left: -25%;
+}

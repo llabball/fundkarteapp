@@ -1,0 +1,380 @@
+<html>
+<head>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="translucent black" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+	<title>DEMO Map of uploaded Tiles</title>
+	<link rel="stylesheet" href="css/font-awesome.min.css" />
+	<link rel="stylesheet" href="css/leaflet.css" />
+	<link rel="stylesheet" href="css/L.Control.horizontalBar.css" />
+	<link rel="stylesheet" href="css/L.Control.messageBox.css" />
+	<link rel="stylesheet" href="css/L.Control.lightBox.css" />
+	<link rel="stylesheet" href="css/L.Control.crossHairs.css" />
+	<link rel="stylesheet" href="css/L.Control.itemForm.css" />
+	<link rel="stylesheet" href="css/L.Marker.currentlocation.css" />
+	<link rel="stylesheet" href="css/L.Control.imageForm.css" />
+	<link rel="stylesheet" href="css/datepicker3.css" />
+	<link rel="stylesheet" href="css/L.Control.datetimePicker.css" />
+	<style type="text/css">
+		html, body {width: 100%; height: 100%; margin: 0; padding: 0;}
+		/*#map {height: 100%;background-color: #F4F3F0;}*/
+		#map { width: 320px; height: 480px; margin: 0 auto;}
+
+		
+	</style>
+</head>
+<body>
+	<div id="crossHairs"><div class="pulse"></div></div>
+	<div id="lightBox"></div>
+	
+	<div id="itemForm">
+		<div id="itemFormBar">
+			<button id="cancelformbtn" class="itemFormBar-button">abbrechen</button>
+			<div class="itemFormBar-header">Fundsache</div>
+			<button id="saveformbtn" class="itemFormBar-button">Fertig</button>
+		</div>
+		<table id="itemFormSkeleton">
+			<tr>
+				<td>
+					<table>
+						<tr>
+							<td rowspan="3" style="width: 75px;">
+								<div id="form-foto">
+									<label id="form-foto-image" for="form-foto-fileinput"></label>
+									<input type="file" id="form-foto-fileinput" />
+								</div>
+							</td>
+							<td><button id="form-location"></button></td>
+						</tr>
+						<tr>
+							<td>
+								<textarea id="form-title" placeholder="Titel" maxlength="52">blauer Handschuh</textarea>
+							</td>
+						</tr>
+						<tr>
+							<td><button id="form-datetime"><span id="form-date"></span><span id="form-time"></span></button></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr style="height: 100%;">
+				<td colspan="2" style="padding: 0 8px 8px 8px;outline: 0;">
+					<textarea id="form-desc" placeholder="Beschreibung">Ich fand auf dem Rabe-Spielplatz auf der Bank ...</textarea>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="imageForm">
+		<div id="imageFormBar">
+			<button id="cancelimagebtn" class="itemFormBar-button">abbrechen</button>
+			<button id="rotateimagebtn" class="itemFormBar-button center">drehen</button>
+			<button id="saveimagebtn" class="itemFormBar-button right">Fertig</button>
+		</div>
+		<canvas id="imageviewport"></canvas>
+	</div>
+
+	<div id="datetimePicker">
+		<div id="datetimePickerBar">
+			<div class="datetimePickerBar-header">Fundzeit</div>
+			<button id="datetimebtn" class="datetimePickerBar-button">Fertig</button>
+		</div>
+		<div id="datePicker"></div>
+		<div id="timePicker">time</div>
+	</div>
+
+	<div id="topbar">
+		<button id="findmebtn" class="horizontalBar-button"><i class="fa fa-location-arrow fa-lg"></i></button>
+		<span id="addresssearchinputwrapper">
+			<input type="text" id="addresssearchinput" placeholder="Adresse finden">
+		</span>
+		<button id="cancelbtn" class="horizontalBar-button right">abbrechen</button>
+		<button id="confirmbtn" class="horizontalBar-button right"><i class="fa fa-check fa-lg"></i></button>
+		<button id="addbtn" class="horizontalBar-button right"><i class="fa fa-plus fa-lg"></i></button>
+	</div>
+
+	<div id="messageBox">
+		<div id="messageBox-message"></div>
+		<button id="messageBox-decline"></button>
+		<button id="messageBox-confirm"></button>
+	</div>
+
+	<div id="map"></div>
+
+	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/leaflet.js"></script>
+	<script src="js/L.Control.horizontalBar.js"></script>
+	<script src="js/L.Control.messageBox.js"></script>
+	<script src="js/L.Control.lightBox.js"></script>
+	<script src="js/L.Control.crossHairs.js"></script>
+	<script src="js/L.Control.itemForm.js"></script>
+  <script src="js/exif.js"></script>
+	<script src="js/megapix-image.js"></script>
+	<script src="js/canvas.js"></script>
+	<script src="js/L.Control.imageForm.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/locales/bootstrap-datepicker.de.js" charset="UTF-8"></script>
+	<script src="js/L.Control.datetimePicker.js"></script>
+	<!-- script src="js/L.Marker.currentlocation.js"></script -->
+	<script type="text/javascript">
+
+		var southWest = L.latLng(52.2942,13.0786)
+			,	northEast = L.latLng(52.7263,13.7693)
+
+		var map = L.map('map', {
+			center: [52.5087,13.4123],
+			zoom: 9,
+			minZoom: 9,
+			maxZoom: 16,
+			zoomControl: false,
+			attributionControl: false,
+			maxBounds: L.latLngBounds(southWest, northEast)
+		})
+
+		L.tileLayer('../../{z}_{x}_{y}/tile.png').addTo(map);
+
+
+		////////////////////////////////////////////////////////////////////////////////////////
+    //add datetimePicker
+		var datetimePicker = L.control.datetimePicker('datetimePicker', {})
+    map.addControl(datetimePicker)
+    $('#datePicker')
+    	.datepicker({
+		    format: 'yyyy-mm-dd',
+		    weekStart: 1,
+		    language: 'de',
+		    endDate: new Date().toISOString(),
+		    orientation: 'top auto',
+		    todayHighlight: true
+			})
+
+		$('#datetimebtn').on('click', function () {
+			var date = $('#datePicker').datepicker('getDate')
+
+			itemForm.setDatetime(date)
+    	datetimePicker.hide()
+    })
+
+		////////////////////////////////////////////////////////////////////////////////////////
+    //add imageForm
+		var imageForm = L.control.imageForm('imageForm', {})
+    map.addControl(imageForm)
+    $('#cancelimagebtn').on('click', function () {
+    	imageForm.hide()
+    })
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //add itemForm
+		var itemForm = L.control.itemForm('itemForm', {})
+    map.addControl(itemForm)
+    $('#cancelformbtn').on('click', function () {
+    	itemForm.hide()
+    })
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //add crossHairs
+		var crossHairs = L.control.crossHairs('crossHairs', {})
+    map.addControl(crossHairs)
+
+		//add topbar
+		var topbar = L.control.horizontalBar('topbar', {position: 'top'});
+    map.addControl(topbar);
+    
+    //invite user: initially show the top bar and then hide
+    topbar.show();
+		setTimeout(function() {
+      topbar.hide();
+    }, 600);
+
+		topbar.on('hide', function () {
+			$('#addresssearchinput').blur()
+		})
+
+		//handling the input field clear cross
+		$('#addresssearchinput').on('click', function (e) {
+			if(!$(this).is(':focus')) return
+	  	if(this.offsetWidth-25 < e.clientX-this.getBoundingClientRect().left)
+	    	$(this).val('');
+	  }).on('touchstart', function (e) {
+			if(!$(this).is(':focus')) return
+	  	if(this.offsetWidth-25 < event.touches[0].pageX-this.getBoundingClientRect().left)
+	  		$(this).val('');
+    }).on('focus', function () {
+	  	$('#addresssearchinputwrapper').addClass('active');
+	  	lightBox.show();
+	  	$('.leaflet-horizontalBar.top').addClass('small');
+    }).on('blur', function () {
+	  	$('#addresssearchinputwrapper').removeClass('active');
+	  	lightBox.hide();
+	  	$('.leaflet-horizontalBar.top').removeClass('small');
+    });
+
+		// wait for doubleclick before handling topbar
+    var clickCount = 0;
+    map.on('click', function () {
+    	clickCount += 1;
+      if (clickCount <= 1) {
+        setTimeout(function() {
+          if (clickCount <= 1) {
+			      topbar.toggle();
+          }
+          clickCount = 0;
+        }, 300);
+      }
+    })
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //add messageBox
+		var messageBox = L.control.messageBox('messageBox', {})
+    map.addControl(messageBox)
+    messageBox.on('show', function () {lightBox.show()})
+    messageBox.on('hide', function () {lightBox.hide()})
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //findme-action
+    var currentlocation
+
+		$('#findmebtn').on('click', function () {
+    	
+			topbar.hide()
+			
+		  foundLocation = function (pos) {
+		    var coords = pos.coords
+		    	, latlng = new L.LatLng(coords.latitude, coords.longitude)
+
+		    if (currentlocation) {
+		    	currentlocation.setLatLng(latlng)
+		    } else {
+			    currentlocation = L.marker(
+			    	[coords.latitude, coords.longitude], {
+			    		icon: L.divIcon({className: 'marker_currentlocation'}),
+			    		clickable: false,
+			    		keyboard: false,
+			    		title: 'Ihre aktuelle Position'
+			    	}
+			    )
+			    currentlocation.addTo(map)
+		    }
+		    	
+		    map.setView(latlng, 16)
+		    messageBox.hide()
+		    topbar.hide()
+		  }
+
+		  noLocation = function () {
+		    messageBox.show({
+		    	message: 'Ihre Position konnte leider nicht ermittelt werden. Sie m&uuml;ssen Ihre Zustimmung in den Einstellungen Ihres Ger&auml;tes erteilen.',
+		    	confirm: {
+		    		label: 'ok',
+		    		callback: function () {
+		    			messageBox.hide()
+		    			topbar.show()
+		    		}
+		    	}
+		    })
+		  }
+
+		 	messageBox.show({
+	    	message: 'Bitte erlauben Sie zur Ermittlung Ihrer aktuellen Position den Zugriff auf Ihr Ger&auml;t.',
+	    	decline: {
+	    		label: 'abbrechen',
+	    		callback: function () {
+	    			messageBox.hide()
+	    			topbar.show()
+	    		}
+	    	},
+	    	confirm: {
+	    		label: 'ok',
+	    		callback: function () {
+	    			messageBox.hide()
+	    			messageBox.once('hidden', function () {
+	    				navigator.geolocation.getCurrentPosition(foundLocation, noLocation)
+	    			})
+	    		}
+	    	}
+	    })
+    })
+		
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //new item action
+    $('#addbtn').on('click', function () {
+    	itemForm.show()
+    })
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //add lightbox
+		var lightBox = L.control.lightBox('lightBox', {})
+    map.addControl(lightBox)
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //add form event handler
+    $('#form-datetime').on('click', function () {
+    	var datetime = itemForm.getDatetime() || new Date().toISOString()
+    		,	date = datetime.split('T')[0]
+			$('#datePicker').datepicker('update', date)
+    	datetimePicker.show()
+    })
+    $('#form-location').on('click', function () {
+    	topbar.enterState('form-location')
+		  itemForm.hide()
+    	crossHairs.show()
+    	map.setZoom(18)
+    })
+    $('#confirmbtn').on('click', function () {
+    	var latlng = map.getCenter()
+    	fillFormlocation(latlng.lat, latlng.lng)
+		  
+		  itemForm.show()
+    	itemForm.on('show', function () {topbar.leaveState('form-location')})
+    	crossHairs.hide()
+    })
+    function fillFormlocation (lat, lng) {
+    	$('#form-location')
+    		.attr('latlng', lat + ',' + lng)
+    		.html('&nbsp;' + Math.round(lat*1000)/1000 + ', ' + Math.round(lng*1000)/1000)
+    }
+
+    //image canvas
+    Canvas.init('imageviewport')
+    $("#imageviewport").on('mousedown touchstart', function(e) {Canvas.handleDrag(e);})
+		$("#imageviewport").on('mousemove touchmove', function(e) {Canvas.handleMove(e);})
+		$("#imageviewport").on('mouseup touchend mouseout', function(e) {Canvas.handleDrop(e);})
+		$('#rotateimagebtn').on('click', function(e) {Canvas.rotateImage(90)})
+		$('#cancelimagebtn').on('click', function(e) {imageForm.hide()})
+		$('#saveimagebtn').on('click', function(e) {
+			var img = Canvas.saveImage()
+
+			if (img.created_at) {
+				var d = new Date(img.created_at)
+				if (d !== 'Invalid Date') {
+					itemForm.setDatetime(d)
+				}
+			}
+
+			if (img.geo && img.geo.coords) {
+				var coords = img.geo.coords
+				fillFormlocation(coords.latitude, coords.longitude)
+			}
+
+			$('#form-foto-image').html('<img src="' + img.data + '" />')			
+			console.log(img)
+
+			imageForm.hide()
+		})
+
+		$("#form-foto-fileinput").change(function() {
+			$('#form-foto-image').addClass('loading')
+			var input = this
+    	if (input.files && input.files[0]) {
+        imageForm.show()
+       	$('#form-foto-image').removeClass('loading')
+        //$('#form-foto-image').css('background-image', 'url('+e.target.result+')').addClass('loaded');
+        Canvas.loadImage(input.files[0])
+    	}
+		})
+
+	</script>
+</body>
+</html>

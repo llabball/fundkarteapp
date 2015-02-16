@@ -1,0 +1,68 @@
+.leaflet-lightBox {
+  position: absolute;
+	height: 100%;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	/*z-index: 900;*/
+	-webkit-transform: translate3d(0,-100%,0);
+	padding: 0;
+	margin: 0;
+	opacity: 0;
+}
+.leaflet-lightBox.visible {
+	-webkit-animation: fadein .5s normal;
+	-webkit-animation-fill-mode: forwards;
+}
+.leaflet-lightBox.hidden {
+	-webkit-animation: fadeout .5s normal;
+	-webkit-animation-fill-mode: forwards;
+}
+@-webkit-keyframes fadein {
+  0% {
+  	opacity: 0;
+    -webkit-transform: translate3d(0,0,0);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translate3d(0,0,0);
+  }
+}
+@-webkit-keyframes fadeout {
+  0% {
+  	opacity: 1;
+    -webkit-transform: translate3d(0,0,0);
+  }
+  99% {
+    opacity: 0;
+    -webkit-transform: translate3d(0,0,0);
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translate3d(0,-100%,0);
+  }
+}
+
+.leaflet-lightBox > .leaflet-control {
+  height: 100%;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+#lightBox {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,1) 100%); /* ff3.6+ */
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(0,0,0,0.2)), color-stop(30%, rgba(0,0,0,0.6)), color-stop(100%, rgba(0,0,0,1))); /* safari4+,chrome */
+	background:-webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,1) 100%); /* safari5.1+,chrome10+ */
+	background: -o-radial-gradient(center, ellipse cover, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,1) 100%); /* opera 11.10+ */
+	background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,1) 100%); /* ie10+ */
+	background:radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 30%, rgba(0,0,0,1) 100%); /* w3c */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=0 ); /* ie6-9 */
+}

@@ -1,0 +1,209 @@
+.leaflet-itemForm {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  /*z-index: 900;*/
+  -webkit-transform: translate3d(0,100%,0);
+  -webkit-transition: -webkit-transform .3s ease-out;
+  padding: 0;
+  margin: 0;
+  background: rgba(247, 247, 245, 0.96);
+  z-index: 4000;
+}
+
+.leaflet-itemForm.visible {
+  -webkit-transform: translate3d(0,0,0);
+}
+
+.leaflet-itemForm > .leaflet-control {
+  height: 100%;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+#itemFormBar {
+  height: 43px;
+  background: rgba(247, 247, 245);
+  border-bottom: 1px solid #BCBAB4;
+  position: relative;
+}
+
+.itemFormBar-header {
+  width: 50%;
+  height: 26px;
+  border: 0;
+  outline: 0;
+  float: left;
+  background: rgba(0, 0, 0, 0);
+  font-size: 16px;
+  font-weight: bold;
+  bottom: 8px;
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  margin-left: -25%;
+}
+.itemFormBar-button {
+  width: 25%;
+  height: 26px;
+  border: 0;
+  outline: 0;
+  color: #037AFA;
+  float: left;
+  background: transparent;
+  font-size: 14px;
+  -webkit-tap-highlight-color:transparent;
+  bottom: 8px;
+  position: absolute;
+  text-align: center;
+  padding-left: 8px;
+}
+.itemFormBar-button:hover {color: #0150A3;cursor: pointer;}
+#cancelformbtn {
+
+}
+#saveformbtn {
+  text-align: right;
+  padding-right: 8px;
+  right: 0;
+}
+
+
+#itemFormSkeleton, #itemFormSkeleton table {
+  width: 100%;
+  height: 100%;
+} 
+#itemFormSkeleton td {
+  padding: 0;
+  vertical-align: top;
+}
+#itemFormSkeleton table {
+  border-spacing: 8px;
+}
+
+#form-foto {
+  float: left;
+  width: 75px;
+  height: 100px;
+  border-radius: 3px;
+  position: relative;
+  background-color: rgba(3, 122, 250, 0.1);
+}
+#form-foto-fileinput {
+  display: none;
+}
+#form-foto-image:empty:after { 
+  content: "\f030";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  font-family: FontAwesome;
+  text-align: center;
+  line-height: 100px;
+  font-size: x-large;
+  color: #037AFA;
+  z-index: -1;
+}
+#form-foto-image:hover:after {
+  color: #0150A3;
+  border-radius: 3px;
+  cursor: pointer;
+}
+#form-foto-image.loading:after {
+  content: "\f110";
+  -webkit-animation:spin 2s infinite linear;
+  -moz-animation:spin 2s infinite linear;
+  -o-animation:spin 2s infinite linear;
+  animation:spin 2s infinite linear;
+}
+@-moz-keyframes spin{
+  0%{-moz-transform:rotate(0deg)}
+  100%{-moz-transform:rotate(359deg)}
+}
+@-webkit-keyframes spin{
+  0%{-webkit-transform:rotate(0deg)}
+  100%{-webkit-transform:rotate(359deg)}
+}
+@-o-keyframes spin{
+  0%{-o-transform:rotate(0deg)}
+  100%{-o-transform:rotate(359deg)}
+}
+@-ms-keyframes spin{
+  0%{-ms-transform:rotate(0deg)}
+  100%{-ms-transform:rotate(359deg)}
+}
+@keyframes spin{
+  0%{transform:rotate(0deg)}
+  100%{transform:rotate(359deg)}
+}
+#form-foto-image {
+  position: absolute;
+  background: no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover; 
+  background-size: cover;
+  border-radius: 3px;
+  width: 100%;
+  height: 100%;
+}
+#form-foto-image > img {
+  width: 100%;
+  height: 100%;
+}
+
+#form-title {
+  border: 0;
+  outline: 0;
+  font-size: 14px;
+  font-weight: bold;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 0;
+  -webkit-tap-highlight-color: #F7F783;
+  resize: none;
+}
+#form-desc {
+  border: 0;
+  outline: 0;
+  font-size: 14px;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  height: 100%;
+  padding: 0;
+  -webkit-tap-highlight-color: #F7F783;
+  resize: none;
+}
+#form-title:focus, #form-desc:focus, #form-title:hover, #form-desc:hover {
+  background-color: #F7F783;
+  border-radius: 3px;
+}
+#form-location, #form-datetime {
+  border: 0;
+  outline: 0;
+  margin-left: 0;
+  color: #037AFA;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0);
+  padding: 0;
+  width: 100%;
+}
+#form-location:not(:empty):before {content: '\f041';font-family: FontAwesome;}
+#form-location:empty:after {content: 'Fundort angeben';font-style: italic;}
+#form-date:empty:after {content: 'Fundzeit angeben';font-style: italic;}
+#form-date:not(:empty):before {content: '\f133';font-family: FontAwesome;margin-right: 4px;}
+#form-time:not(:empty):before {content: '\f017';font-family: FontAwesome;margin-right: 4px;}
+#form-location:hover, #form-datetime:hover {
+  color: #0150A3;
+  cursor: pointer;
+  background-color: #F7F783;
+  border-radius: 3px;
+}
+#form-time {float: right;}

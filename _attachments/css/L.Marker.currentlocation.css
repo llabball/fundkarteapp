@@ -1,0 +1,20 @@
+.marker_currentlocation {
+  background-color: #037afa;
+  border-radius: 50%;
+  height: 10px;
+  width: 10px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+}
+.marker_currentlocation:after {
+  content: "";
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  margin: -15px 0 0 -15px;
+  opacity: 0.5;
+  background-color: rgba(3, 122, 250, 0.5);
+  z-index: -1;
+}

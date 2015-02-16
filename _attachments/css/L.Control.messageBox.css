@@ -1,0 +1,79 @@
+.leaflet-messageBox {
+  position: absolute;
+	height: 250px;
+	width: 80%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	z-index: 1000;
+	-webkit-transform: translate3d(0,-250px,0);
+	transition: -webkit-transform 0.3s ease-out;
+	padding: 0;
+	margin-left: 10%;
+	max-width: 300px;
+}
+.leaflet-messageBox.visible {
+	-webkit-transform: translateY(100px);
+}
+.leaflet-messageBox > .leaflet-control {
+  height: 100%;
+  width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+#messageBox {
+  font-size: 1.1em;
+	background: rgba(247,247,245,.94);
+  padding: 0;
+  border-radius: 5px;
+}
+#messageBox-message {
+	height: 200px;
+	text-align: center;
+	padding: 8px;
+	box-sizing: border-box;
+	font-weight: bold;
+	font-size: larger;
+	vertical-align: middle;
+	display: table-cell;
+}
+#messageBox-decline {
+	width: 50%;
+	height: 50px;
+	float: left;
+	background: rgba(0, 0, 0, 0);
+	outline: 0;
+	padding: 0;
+	border: 0;
+	border-top: 1px solid #BCBAB4;
+	font-weight: bold;
+	font-size: larger;
+	color: #037AFA;
+}
+#messageBox-decline.hidden {
+	display: none;
+}
+#messageBox-confirm {
+	width: 50%;
+	height: 50px;
+	right: 0;
+	background: rgba(0, 0, 0, 0);
+	outline: 0;
+	padding: 0;
+	border: 0;
+	border-top: 1px solid #BCBAB4;
+	border-left: 1px solid #BCBAB4;
+	font-weight: bold;
+	font-size: larger;
+	color: #037AFA;
+}
+#messageBox-decline.hidden ~ #messageBox-confirm {
+	width: 100%;
+}
+#messageBox-confirm:hover, #messageBox-decline:hover {
+	background-color: #fff;
+}
