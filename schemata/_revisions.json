@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "description": "a private CouchDB property of every doc - must be included to handle the validation in a validate_doc_update.js",
+  "properties": {
+    "start": { "type": "number" },
+    "ids": { "type": "array" }
+  }
+}

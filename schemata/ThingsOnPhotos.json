@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "A representation of a thing at a photo",
+  "type": "object",
+  "required": ["_id","title","created_at","adr","geo","type"],
+  "properties": {
+    "_id": { "type": "string", "pattern": "^[a-f0-9]{32}$" },
+    "_rev": { "type": "string", "pattern": "^[0-9]+\\-[a-f0-9]{32}$" },
+    "title": { "type": "string" },
+    "desc": { "type": "string" },
+    "created_at": { "type": "string", "pattern": "^[0-9]{4}-[0-1][0-9]-[0-3][0-9]T[0-2][0-9]:[0-5][0-9]:[0-5][0-9][+][0-1][0-9][0-5][0-9]$" },
+    "adr": { "$ref": "adr" },
+    "geo": { "$ref": "geo" },
+    "type": { "type": "string", "pattern": "^ThingOnPhoto$" },
+    "_attachments": { "$ref": "_attachments" },
+    "_revisions": { "$ref": "_revisions" }
+  }
+}

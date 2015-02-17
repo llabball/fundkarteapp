@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "description": "CouchDB doc _attachments property handling for inline (Base64) attachment uploads",
+  "patternProperties": {
+    "^([A-Za-z_\\-]+/)+start\\.png$": {
+      "type": "object",
+      "properties": {
+        "content_type": { "type": "string", "pattern": "^image\/png$" },
+        "data": { "type": "string" },
+        "revpos": { "type": "number" },
+        "stub": { "type": "boolean" },
+        "length": { "type": "number" }
+      }
+    }
+  }
+}
