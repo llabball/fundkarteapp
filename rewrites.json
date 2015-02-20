@@ -1,0 +1,62 @@
+[
+  {
+    "to": "../../../fundkarte_maptiles/*",
+    "from": "maptiles/*",
+    "method": "GET"
+  },
+  {
+    "to": "fonts/:file",
+    "from": "fonts/:file",
+    "method": "GET"
+  },
+  {
+    "to": "css/:file",
+    "from": "css/:file",
+    "method": "GET"
+  },
+  {
+    "to": "img/:file",
+    "from": "img/:file",
+    "method": "GET"
+  },
+  {
+    "to": "js/*",
+    "from": "js/*",
+    "method": "GET"
+  },
+  {
+    "from": "f/store",
+    "to": "../../",
+    "method": "POST"
+  },
+  {
+    "from": "f/:id",
+    "to": "_rewrite/f/:id/index.html",
+    "method": "GET"
+  },
+  {
+    "from": "f/:id/index.html",
+    "to": "../../:id/index.html",
+    "method": "GET"
+  },
+  {
+    "from": "f/*",
+    "to": "../../*",
+    "method": "GET"
+  },
+  {
+    "to": ":file",
+    "from": ":file",
+    "method": "GET"
+  },
+  {
+    "to": "index.html",
+    "from": "/",
+    "method": "GET"
+  },
+  {
+    "to": "index.html",
+    "from": "*",
+    "method": "GET"
+  }
+]
