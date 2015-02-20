@@ -1,7 +1,11 @@
 function (newDoc, oldDoc, userCtx, secObj) {
   
-  if(newDoc._deleted === true)
-    return
+  if(newDoc._deleted === true) {
+    if (userCtx.roles.indexOf('_admin') !== -1)
+      return
+    else 
+      throw({forbidden : 'Only admins may delete documents.'})
+  }
 
   var tv4 = require('commonjs/tv4.min')
   var schemata = this.schemata
@@ -21,7 +25,7 @@ function (newDoc, oldDoc, userCtx, secObj) {
     var banUnknownProperties = true
     var result = tv4.validateResult(newDoc, tv4.getSchema('ThingsOnPhotos'), checkRecursive, banUnknownProperties)
   } catch (ex) {
-    throw({forbidden : 'Internal error: ' + ex})
+    throw({forbidden : 'Internal error: ' + JSON.stringify(ex)})
   }
 
   if(result.valid !== true)
