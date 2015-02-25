@@ -25,8 +25,13 @@
     "method": "GET"
   },
   {
-    "from": "f/store",
-    "to": "../../",
+    "from": "f",
+    "to": "_update/ThingOnPhoto",
+    "method": "POST"
+  },
+  {
+    "from": "f/:id",
+    "to": "_update/ThingOnPhoto/:id",
     "method": "POST"
   },
   {
