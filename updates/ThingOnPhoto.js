@@ -28,6 +28,7 @@ function (doc, req) {
 		var template = this.templates.html.static_app_skeleton
 
 		var mustache = require('commonjs/mustache.min')
+		var map = require('commonjs/staticmap')
 		var html = mustache.render(template, {
 			'_id': newDoc._id,
 			'title': newDoc.title,
@@ -35,7 +36,9 @@ function (doc, req) {
 			'datetime': newDoc.created_at,
 			'address': newDoc.adr['street-address'] + ', ' + newDoc.adr['postal-code'] + ' ' + newDoc.adr.locality,
 			'latlng': newDoc.geo.latitude + ',' + newDoc.geo.longitude,
-			'css': this.templates.css.static_app_skeleton
+			'css': this.templates.css.static_app_skeleton,
+			'map': map.getStaticMap(13.425508,52.5280897,15, 640, 960, 256, 'http://178.77.76.245/fundkarte_maptiles')
+
 		})
 
 		var couch64 = require('commonjs/couch64')

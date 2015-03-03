@@ -50,7 +50,7 @@ exports.getStaticMap = function (lng, lat , zoom, width, height, tilesize, baseu
 		, layerheight = tilesize * (vertical * 2 + 1)
 		, marginx = (layerwidth - width) / 2
 		,	marginy = (layerheight - height) / 2
-	html.push('<div class="sm-maplayer" style="width:' + layerwidth + ';margin-left:-' + marginx + 'px;margin-top:-' + marginy + 'px;position:absolute;">')
+	html.push('<div class="sm-maplayer" style="width:' + layerwidth + 'px;margin-left:-' + marginx + 'px;margin-top:-' + marginy + 'px;position:absolute;">')
 
 	var pixeltransparent = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII='
 	for (var i = 0, tile; tile = tiles[i++];) {
