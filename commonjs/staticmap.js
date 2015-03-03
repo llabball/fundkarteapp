@@ -1,36 +1,3 @@
-exports.getTileCoords = function (lng, lat , zoom, width, height, tilesize, baseurl) {
-
-	var width = width || 1024
-		, height = height || 1024
-		,	tilesize = tilesize || 256
-		, tiles = []
-
-	if (!lng || isNaN(lng) || !lat || isNaN(lat) || !zoom || isNaN(zoom) || isNaN(width) || isNaN(height) || isNaN(tilesize)) 
-		return tiles
-
-	// center map tile coords
-	var x = lng2tile(lng,zoom)
-		,	y = lat2tile(lat,zoom)
-
-	//calculation of viewport dimensions
-	var horizontal = Math.round((width/2-tilesize/2)/tilesize)
-		,	vertical = Math.round((height/2-tilesize/2)/tilesize)
-
-	// all map tiles
-	for (var i = -horizontal; i <= horizontal; i++) {
-		for (var k = -vertical; k <= vertical; k++) {
-			tiles.push({
-				x: x + k,
-				y: y + i,
-				zoom: zoom,
-				url: baseurl + '/' + zoom + '_' + (x + k) + '_' + (y + i) + '/tile.png'
-			})
-		}
-	}
-
-	return tiles
-}
-
 exports.getStaticMap = function (lng, lat , zoom, width, height, tilesize, baseurl) {
 	var width = width || 1024
 		, height = height || 1024
@@ -43,19 +10,35 @@ exports.getStaticMap = function (lng, lat , zoom, width, height, tilesize, baseu
 	// center map tile coords
 	var x = lng2tile(lng,zoom)
 		,	y = lat2tile(lat,zoom)
+		, xs = []
+		, ys = []
 
 	//calculation of viewport dimensions
-	var horizontal = Math.round((width/2-tilesize/2)/tilesize)
-		,	vertical = Math.round((height/2-tilesize/2)/tilesize)
+	var horizontal = Math.ceil((width/2-tilesize/2)/tilesize)
+		,	vertical = Math.ceil((height/2-tilesize/2)/tilesize)
+
+	if (horizontal === 0) {
+		xs.push(x)
+	} else {
+		for (var i = -horizontal; i <= horizontal; i++)
+			xs.push(x+i)
+	}
+
+	if (vertical === 0) {
+		ys.push(y)
+	} else {
+		for (var k = -vertical; k <= vertical; k++)
+			ys.push(y + k)
+	}
 
 	// all map tiles
-	for (var i = -horizontal; i <= horizontal; i++) {
-		for (var k = -vertical; k <= vertical; k++) {
+	for (var m = 0, ytile; ytile = ys[m++];) {
+		for (var n = 0, xtile; xtile = xs[n++];) {
 			tiles.push({
-				x: x + k,
-				y: y + i,
+				x: xtile,
+				y: ytile,
 				zoom: zoom,
-				url: baseurl + '/' + zoom + '_' + (x + k) + '_' + (y + i) + '/tile.png'
+				url: baseurl + '/' + zoom + '_' + xtile + '_' + ytile + '/tile.png'
 			})
 		}
 	}
@@ -69,8 +52,9 @@ exports.getStaticMap = function (lng, lat , zoom, width, height, tilesize, baseu
 		,	marginy = (layerheight - height) / 2
 	html.push('<div class="sm-maplayer" style="width:' + layerwidth + ';margin-left:-' + marginx + 'px;margin-top:-' + marginy + 'px;position:absolute;">')
 
+	var pixeltransparent = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVQIW2NkAAIAAAoAAggA9GkAAAAASUVORK5CYII='
 	for (var i = 0, tile; tile = tiles[i++];) {
-		html.push('<img src="' + tile.url + '" style="float:left;" />')
+		html.push('<img src="' + pixeltransparent + '" onload="javascript:this.setAttribute(\'src\', this.getAttribute(\'data-src\'))" data-src="' + tile.url + '" style="float:left;width:' + tilesize + 'px;height:' + tilesize + 'px;" />')
 	}
 
 	//container and map layer end (crop frame)
